@@ -1,28 +1,34 @@
 pipeline {
-    agent any
+    agent any  // This specifies that the pipeline can run on any available agent.
+
+    environment {
+        NODE_VERSION = '22'
+    }
 
     stages {
         stage('Prepare') {
             steps {
-                echo 'Installing Node.js v22...'
-                sh '''
-                    curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-                    sudo apt-get install -y nodejs
-                '''
+                script {
+                    echo "Installing Node.js version ${env.NODE_VERSION}"
+                    sh "curl -sL https://deb.nodesource.com/setup_${env.NODE_VERSION}.x | sudo -E bash -"
+                    sh "sudo apt-get install -y nodejs"
+                }
             }
         }
-
         stage('Build') {
             steps {
-                echo 'Checking npm version...'
-                sh 'npm --version'
+                script {
+                    echo "Building with npm version"
+                    sh "npm -v"
+                }
             }
         }
-
         stage('Test') {
             steps {
-                echo 'Displaying JENKINS_URL...'
-                sh 'echo $JENKINS_URL'
+                script {
+                    echo "Running tests and displaying JENKINS_URL"
+                    echo "Jenkins URL: ${env.JENKINS_URL}"
+                }
             }
         }
     }
