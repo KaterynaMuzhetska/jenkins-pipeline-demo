@@ -12,6 +12,10 @@ pipeline {
                     echo "Installing Node.js version ${env.NODE_VERSION}"
                     sh "curl -sL https://deb.nodesource.com/setup_${env.NODE_VERSION}.x | sudo -E bash -"
                     sh "sudo apt-get install -y nodejs"
+		    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+                    source ~/.bashrc
+                    nvm install 22
+                    nvm use 22
                 }
             }
         }
